@@ -1,0 +1,55 @@
+--Show DataBase
+
+SELECT*
+FROM uscis_cases_summary
+
+--Which type of immigration application has the highest approval rate?
+
+SELECT Type, ApprovedCount/TotalCount AS ApprovalRate
+FROM uscis_cases_summary
+ORDER BY ApprovalRate DESC
+LIMIT 1;
+
+--Which type of immigration application has the highest volume of submissions?
+
+SELECT Type, TotalCount
+FROM uscis_cases_summary
+ORDER BY TotalCount DESC
+LIMIT 1;
+
+
+--What is the overall approval rate for each type of immigration application?
+
+SELECT Type, CAST((ApprovedCount * 100.0 / TotalCount) as decimal(5,2)) as ApprovalRate
+FROM uscis_cases_summary;
+
+
+--How many immigration applications were submitted and approved in the last 30 days?
+
+SELECT COUNT(*) as TotalSubmitted, SUM(ApprovedLast28Days) as TotalApproved
+FROM uscis_cases_summary;
+
+
+--How many applications have been approved in the last 30 days?
+
+SELECT COUNT(*) AS ApprovedCount
+FROM uscis_cases_summary
+WHERE ApprovedLast28Days > 0
+
+--What is the total number of applications that have been submitted?
+
+SELECT SUM(TotalCount) AS TotalApplications
+FROM uscis_cases_summary
+
+--How many applications have been approved in each immigration center?
+
+SELECT Center, SUM(ApprovedCount) AS ApprovedCount
+FROM uscis_cases_summary
+GROUP BY Center
+
+
+
+
+
+
+
